@@ -1,0 +1,142 @@
+.main {
+  height: 100vh;
+}
+.navbar h3 {
+  font-size: 20px;
+  font-weight: 500;
+  color: gray;
+  text-transform: uppercase;
+  letter-spacing: 0.25rem;
+}
+.svgDiv {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: #ffffff;
+  opacity: 0.3;
+  background-image: radial-gradient(#444cf7 1.1500000000000001px, #eef4f9ad 1.1500000000000001px);
+  background-size: 23px 23px;
+  box-shadow: inset 0px 0px 7px 5px #0000001f;
+  border-radius: 8px;
+  margin-inline: 1rem 3rem;
+}
+.svgGcode {
+  border-radius: 2rem;
+  padding: 20px 25px 25px 25px;
+  box-shadow: rgba(50, 50, 93, 0.25) 0px 2px 5px -1px, rgba(0, 0, 0, 0.3) 0px 1px 3px -1px;
+}
+
+.svgGcode h3 {
+  text-align: end;
+  text-transform: uppercase;
+  font-size: 15px;
+  margin-bottom: 0.3rem;
+  color: gray;
+  font-weight: 500;
+}
+
+
+.svgGcode textarea {
+  width: 100%;
+  height: 95%;
+  width: 100%;
+  background-color: #e5e5f796;
+  border: 0;
+  color: gray;
+  box-shadow: inset 0px 0px 10px 1px #00000007;
+  border-radius: 5px;
+  padding: 10px;
+  transition: box-shadow 0.5s ease;
+  outline: none; /* Remove default focus outline */
+}
+
+.svgGcode textarea:focus {
+  box-shadow: inset 0px 0px 10px 8px #6969691c;
+}
+
+.svgButtons {
+  padding: 0px 20px 20px 20px;
+}
+
+.grid-container {
+  display: grid;
+  grid-template-columns: 1fr 1fr; /* 2 columns */
+  grid-template-rows: 2fr 1fr 1fr 1fr; /* 4 rows with the first row and second row being auto-sized */
+  gap: 20px;
+  width: 100%; 
+  height: 100%;
+}
+
+
+.grid-container div:nth-child(2) h5 {
+  color: gray;
+  margin-right: 5px;
+  font-size: 13px;
+}
+
+.grid-container label {
+  text-align: end;
+  width: 80%;
+  font-size: .8rem;
+  color: gray;
+}
+
+.grid-container input {
+  width: 100%;
+  background-color: #e5e5f796;
+  border: 0;
+  color: gray;
+  box-shadow: inset 0px 0px 10px 1px #00000007;
+  border-radius: 5px;
+  font-size: 10px;
+  margin-left: 10px;
+  padding-block: .4rem;
+  transition: box-shadow 0.5s ease;
+  outline: none; /* Remove default focus outline */
+  text-align: center;
+}
+
+.generateGcode {
+  background-color: #3A5A99;
+  color: white;
+  padding: 8px 15px;
+  border-radius: 2rem;
+  transition: 0.5s ease;
+  font-size: 12px;
+  min-width: 180px;
+  
+}
+.generateGcode:hover {
+  letter-spacing: 1px;
+  box-shadow: rgba(50, 50, 93, 0.25) 0px 6px 12px -2px, rgba(0, 0, 0, 0.3) 0px 3px 7px -3px;
+}
+
+.plot {
+  text-decoration: none;
+  padding-left: 12px;
+  display: inline-block;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  font-weight: 600;
+  color: green;
+  transition: background-color 0.5s linear;
+}
+
+
+
+.fa-print {
+  color: white;
+  display: inline-block;
+  background-color:green; /* Background color of the icon */
+  border-radius: 50%; /* Make the background circular */ /* Adjust padding as needed */
+  line-height: 1;
+  padding: 8px;
+  transition: background-color 0.5s linear;
+}
+.container {
+  position: relative;
+  width: 300px; /* Adjust width as needed */
+  height: 200px; /* Adjust height as needed */
+  overflow: hidden; /* Hide overflow content */
+}
+
