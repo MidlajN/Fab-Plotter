@@ -19,14 +19,21 @@
       </nav>
 
       <div class="flex m-10 h-3/4 items-center">
-        <div class="w-3/4 h-full p-5 svgDiv">
-         <h1>Qaise E Rum</h1> 
+        <div id="dropArea" class="w-3/4 h-full p-5 svgDiv">
+         <div id="drop">
+          <p class="mb-3">Drag The File Here</p>
+          <input type="file" name="svg" id="svgInput" placeholder="Choose The SVG File">
+         </div>
+         <div id="result">
+            <div id="zoomContainer">
+            </div>
+         </div>
         </div>
         <div class="w-1/4 px-5 h-full">
           <div class="h-1/4 svgButtons">
             <div class="grid-container">
               <div class="flex items-center justify-center">
-                <button>Connect</button>
+                <button class="connect">Connect <i class="fa-solid fa-plug-circle-bolt"></i></button>
               </div>
               <div class="flex items-center justify-end">
                 <h5>zOffset</h5>
@@ -61,12 +68,11 @@
           </div>
           <div class="h-3/4 svgGcode">
             <h3>Gcode</h3>
-            <textarea name="gcode" id="gcode"></textarea>
+            <textarea name="gcode" id="gcode" onchange="readSVG(this.value)"></textarea>
           </div>
         </div> 
       </div>
     </div>
-  
     <!-- <div id="app"></div> -->
     <script type="module" src="/main.js"></script>
   </body>
