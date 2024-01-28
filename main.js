@@ -1,5 +1,6 @@
 import './style.css';
-import { svg2gcode } from 'svg-to-gcode/svg2gcode';
+import { Converter } from 'svg-to-gcode';
+import { optimize } from 'svgo';
 
 
 document.getElementById('gcode').onchange =()=>{
@@ -15,9 +16,12 @@ document.addEventListener('DOMContentLoaded', function () {
   const zoomContainer = document.getElementById('result');
   const zoomedContent = document.getElementById('zoomContainer');
 
+  let svgContent;
+  let gcodeLines;
+
   dropArea.addEventListener('dragenter', (e) => {
     e.preventDefault();
-    dropArea.style.boxShadow = 'rgb(0 159 255 / 50%) 0px 0px 16px 8px inset';
+    dropArea.style.boxShadow = 'rgb(0 159 255 / 31%) 0px 0px 16px 8px inset';
     // dropArea.style.cursor = 'pointer';
   })
   dropArea.addEventListener('dragleave', (e) => {
@@ -35,9 +39,6 @@ document.addEventListener('DOMContentLoaded', function () {
     
     const svgFiles = e.dataTransfer.files;
     displaySvg(svgFiles[0])
-
-    // toggleButtonState();
-    // initializeGerberToSVG(files);
   })
 
   svgInput.addEventListener('change', (e) => {
@@ -76,18 +77,42 @@ document.addEventListener('DOMContentLoaded', function () {
       const reader = new FileReader();
   
       reader.onload = (e) => {
-        const svgContent = e.target.result;
-        console.log(svgContent)
-        const img = document.createElement('img');
-        img.src = svgContent
-        zoomedContent.appendChild(img);
-
+        svgContent = e.target.result;
+        zoomedContent.innerHTML = svgContent
         zoomContainer.style.opacity = '1';
         svgInputDiv.style.display = 'none';
       }
-      reader.readAsDataURL(file)
+      reader.readAsText(file)
     }
   }
+
+
+  const gcodeBtn = document.getElementById('generateGcode');
+  gcodeBtn.addEventListener('click', async () => {
+    const result = optimize(svgContent);
+    const optimizedSvg = result.data; // Optionally the optimized SVG can be used
+    
+    const zOffset = 4;
+    const feedRate = document.getElementById('feedRate').value;
+    const seekRate = document.getElementById('seekRate').value;
+
+    const settings = {
+      zOffset : zOffset,
+      feedRate : feedRate,
+      seekRate : seekRate
+    }
+    const converter = new Converter(settings)
+
+    const gcode = await converter.convert(svgContent)
+    const textarea = document.getElementById('gcode')
+    gcodeBtn.setAttribute('disabled', true)
+    textarea.value = gcode[0];
+    // textarea.removeAttribute('disabled')
+    textarea.style.color = 'gray';
+
+    gcodeLines = gcode[0].split('\n')
+  })
+  
 })
 
 

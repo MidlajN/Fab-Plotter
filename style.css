@@ -13,8 +13,8 @@
   align-items: center;
   justify-content: center;
   background-color: #ffffff;
-  opacity: 0.3;
-  background-image: radial-gradient(#444cf7 1.1500000000000001px, #eef4f9ad 1.1500000000000001px);
+  /* opacity: 0.3; */
+  background-image: radial-gradient(#444df756 1.1500000000000001px, #eef4f98e 1.1500000000000001px);
   background-size: 23px 23px;
   box-shadow: inset 0px 0px 7px 5px #0000001f;
   border-radius: 8px;
