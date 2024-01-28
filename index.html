@@ -34,6 +34,7 @@
             <div class="grid-container">
               <div class="flex items-center justify-center">
                 <button class="connect" id="connect">Connect <i class="fa-solid fa-plug-circle-bolt"></i></button>
+                <button id="disconnect" class="connect" style="display: none;margin-left:auto;transition: 0.5s;background-color: #9d1818;">Disconnect <i class="fa-solid fa-plug-circle-xmark" style="color: white;"></i></button>
               </div>
               <div class="flex items-center justify-end">
                 <h5>zOffset</h5>
@@ -51,24 +52,25 @@
               </div>
               <div class="flex items-center justify-between">
                 <label for="">feedRate</label>
-                <input id="feedRate" type="number" max="9999" maxlength="4" placeholder="6000" disabled oninput="javascript: if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);">
+                <input id="feedRate" type="number" max="9999" maxlength="4" placeholder="1100" disabled oninput="javascript: if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);">
               </div>
               <div class="flex items-center justify-center">
                 <label for="">seekRate</label>
-                <input id="seekRate" type="number" max="9999" maxlength="4" placeholder="4000" disabled oninput="javascript: if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);">
+                <input id="seekRate" type="number" max="9999" maxlength="4" placeholder="1400" disabled oninput="javascript: if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);">
 
               </div>
               <div class="flex items-center justify-center">
                 <button class="generateGcode" id="generateGcode"><i class="fa-solid fa-gears"></i> Generate G-Code</button>  
               </div>
               <div class="flex items-center justify-end">
-                <a class="plot" href="">Plot <i class="fa-solid fa-print fa-sm"></i></a>
+                <button class="plot" id="sendSerial">Plot <i class="fa-solid fa-print fa-sm"></i></button>
               </div>
             </div>            
           </div>
           <div class="h-3/4 svgGcode">
-            <h3>Gcode</h3>
-            <textarea name="gcode" id="gcode" style="transition: 0.5s ease;color: rgba(240, 248, 255, 0);"></textarea>
+            
+            <!-- <button disabled id="clearCode">Clear G-Code &nbsp; <i class="fa-solid fa-trash"></i></button> -->
+            <textarea name="gcode" id="gcode" disabled style="transition: 0.5s ease;color: rgba(240, 248, 255, 0);"></textarea>
           </div>
         </div> 
       </div>

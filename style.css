@@ -47,25 +47,34 @@
 }
 
 .svgGcode {
-  border-radius: 2rem;
-  padding: 20px 25px 25px 25px;
+  position: relative;
+  border-radius: 1rem;
+  padding: 25px;
   box-shadow: rgba(50, 50, 93, 0.25) 0px 2px 5px -1px, rgba(0, 0, 0, 0.3) 0px 1px 3px -1px;
+  overflow: hidden;
 }
 
-.svgGcode h3 {
+.svgGcode button {
+  position: absolute;
+  right: 30px;
+  top: 30px;
   text-align: end;
-  text-transform: uppercase;
-  font-size: 15px;
-  margin-bottom: 0.3rem;
-  color: gray;
+  font-size: 12px;
   font-weight: 500;
+  padding: 3px 10px;
+  background: #cbcbcb78;
+  border-radius: .5rem;
+  color: white;
+  transition: 0.5s ease;
 }
-
+.clearCode:hover {
+  background-color: red;
+  color: white !important; 
+}
 
 .svgGcode textarea {
   width: 100%;
-  height: 95%;
-  width: 100%;
+  height: 100%;
   background-color: #e5e5f796;
   border: 0;
   color: gray;
@@ -107,12 +116,15 @@
 .connect:hover {
   box-shadow: rgba(0, 0, 0, 0.4) 0px 2px 4px, rgba(0, 0, 0, 0.3) 0px 7px 13px -3px, rgba(0, 0, 0, 0.2) 0px -3px 0px inset;
 }
-
 .connect:hover .fa-plug-circle-bolt{
   transform: rotate(45deg) scale(0.9) ;
   text-shadow: 0 0px 4px #0aff17bf;
 }
-.fa-plug-circle-bolt {
+.connect:hover .fa-plug-circle-xmark {
+  transform: rotate(45deg) scale(0.9) ;
+  text-shadow: 0 0px 4px #f1b3b3bf;
+}
+.fa-plug-circle-bolt, .fa-plug-circle-xmark {
   transition: 0.5s ease;
 }
 
