@@ -4,11 +4,15 @@ import { optimize } from 'svgo';
 import { requestSerialPort, closeSerialPort } from './serial';
 
 
+
 document.addEventListener('DOMContentLoaded', function () {
   let zoomLevel = 1;
   const maxZoomLevel = 4;
   let svgContent;
   let gcodeArray = [];
+
+  let port;
+  let reader;
 
   // ------------------- Drag and Drop & Input Functions ----------------------
   const dropArea = document.getElementById('dropArea');
@@ -40,7 +44,6 @@ document.addEventListener('DOMContentLoaded', function () {
   svgInput.addEventListener('change', (e) => {
     const svgFiles = e.target.files;
     displaySvg(svgFiles[0])
-    console.log('FILES ::', svgFiles[0]) 
   })
 
 
@@ -104,10 +107,10 @@ document.addEventListener('DOMContentLoaded', function () {
     const converter = new Converter(settings);
 
     converter.convert(svgContent).then((gcodes) => {
-      console.log('GCODE FROM CONVERTER ::::', gcodes)
+
       gcode = gcodes[0];
       gcodeBtn.setAttribute('disabled', true)
-      // textarea.removeAttribute('disabled')
+      textarea.removeAttribute('disabled')
 
       textarea.value = gcode;
       textarea.style.color = 'gray';
@@ -128,6 +131,17 @@ document.addEventListener('DOMContentLoaded', function () {
   })
 
 
+  // -------------------------- Download the Generated G-Code ---------------------------
+  document.getElementById('downloadGcode').addEventListener('click', () => {
+    const svgFile = new Blob([textarea.value], { type : 'text/plain'})
+    const link = document.createElement('a');
+    link.href = URL.createObjectURL(svgFile);
+    link.download = 'g-code-output.gcode';
+    link.click();
+    URL.revokeObjectURL(link.href)
+  })
+
+
   // ------------ Button For Clearing the Existing G-Code from the textarea -----------
   // clrBtn.addEventListener('click', () => {
   //   document.getElementById('gcode').value = '';
@@ -140,16 +154,55 @@ document.addEventListener('DOMContentLoaded', function () {
   // })
 
 
-  // ------------------- Connect & Send the G-Code to Plotter via Serial API -----------------------
+  // ------------------- Connect to Plotter via Serial API -----------------------
   const serialBtn = document.getElementById('connect');
-  serialBtn.addEventListener('click', () => {
-    console.log('Connect Btn', gcodeArray)
-    requestSerialPort().then(() => {
-      serialBtn.style.display = 'none';
-      document.getElementById('disconnect').style.display = 'block'
-    })
+  serialBtn.addEventListener('click', async () => {
+    port = await navigator.serial.requestPort();
+    const { usbProductId, usbVendorId } = port.getInfo();
+    console.log("portInfo :::", usbProductId, usbVendorId);
+    await port.open({ baudRate: 9600 });
+    console.log('Port opened successfully >>>>', port);
+
   })
 
+
+  // ------------------- Send the G-Code to the Plotter through Serial Connection ----------------------
+  const sendBtn = document.getElementById('sendSerial');
+  sendBtn.addEventListener('click', async () => {
+    const reader = port.readable.getReader();
+    const writer = port.readable.getWriter();
+    const encoder = new TextEncoder();
+
+    let gcodeArray = []
+    const gcodeString = document.getElementById('gcode').value;
+    const gcodeLines = gcodeString.split('\n');
+    gcodeLines.forEach(line => {
+      const trimmedLine = line.trim();
+
+      if (trimmedLine !== ""){
+        gcodeArray.push(trimmedLine)
+      };
+    })
+
+    for (const command of gcodeArray){
+      
+      await writer.write(encoder.encode(command))
+      const response = await reader.read();
+
+      if (response) {
+        console.log('Command : ' + command + ' >>>>> OK');
+      } else {
+        console.error('Unexpected Error : ', response);
+      }
+    }
+
+    writer.releaseLock();
+    reader.releaseLock();
+    
+  })
+
+
+  // ------------------- Close the Serial PORT Communication ------------------------
   const closeSerialBtn = document.getElementById('disconnect');
   closeSerialBtn.addEventListener('click', () => {
     closeSerialPort().then(() => {
