@@ -101,8 +101,8 @@ document.addEventListener('DOMContentLoaded', function () {
 
     const settings = {
       zOffset : zOffset,
-      feedRate : 100,
-      seekRate : 200
+      feedRate : 1100,
+      seekRate : 1400
     }
     const converter = new Converter(settings);
 
@@ -157,10 +157,24 @@ document.addEventListener('DOMContentLoaded', function () {
   // ------------------- Connect to Plotter via Serial API -----------------------
   const serialBtn = document.getElementById('connect');
   serialBtn.addEventListener('click', async () => {
+    // Filter on devices with the Arduino Uno USB Vendor/Product IDs.
+    const filters = [
+      { usbVendorId: 0x2341, usbProductId: 0x0043 },
+      { usbVendorId: 0x2341, usbProductId: 0x0001 }
+    ];
+
+    // Prompt user to select an Arduino Uno device.
     port = await navigator.serial.requestPort();
+
+
+    // port = await navigator.serial.requestPort();
     const { usbProductId, usbVendorId } = port.getInfo();
     console.log("portInfo :::", usbProductId, usbVendorId);
-    await port.open({ baudRate: 9600 });
+    await port.open({ baudRate: 115200 });
+    // const encoder = new TextEncoder();
+    // const wrt = port.writable.getWriter();
+    // wrt.write(encoder.encode("G0 X0 Y0"));
+    // wrt.releaseLock();
     console.log('Port opened successfully >>>>', port);
 
   })
@@ -170,12 +184,10 @@ document.addEventListener('DOMContentLoaded', function () {
   const sendBtn = document.getElementById('sendSerial');
   sendBtn.addEventListener('click', async () => {
     const reader = port.readable.getReader();
-    const writer = port.readable.getWriter();
-    const encoder = new TextEncoder();
-
     let gcodeArray = []
     const gcodeString = document.getElementById('gcode').value;
     const gcodeLines = gcodeString.split('\n');
+    
     gcodeLines.forEach(line => {
       const trimmedLine = line.trim();
 
@@ -184,21 +196,30 @@ document.addEventListener('DOMContentLoaded', function () {
       };
     })
 
+    // const encoder = new TextEncoder();
+    // const writer = port.writable.getWriter();
+    // await writer.write(encoder.encode("G0 X0Y0\n"));
+    // writer.releaseLock();
+
     for (const command of gcodeArray){
+      console.log('Command : ', command)
+      const encoder = new TextEncoder();
+      const writer = port.writable.getWriter();
       
-      await writer.write(encoder.encode(command))
-      const response = await reader.read();
+      await writer.write(encoder.encode(`${command}\n`));
+      writer.releaseLock();
+
+      const response =   await reader.read();
+      const recievedText = new TextDecoder().decode(response.value);
 
       if (response) {
-        console.log('Command : ' + command + ' >>>>> OK');
+        console.log('Command : ' + command + ' >>>>>' + recievedText);
       } else {
         console.error('Unexpected Error : ', response);
+        break;
       }
     }
-
-    writer.releaseLock();
     reader.releaseLock();
-    
   })
 
 
