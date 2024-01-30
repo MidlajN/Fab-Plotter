@@ -101,8 +101,8 @@ document.addEventListener('DOMContentLoaded', function () {
 
     const settings = {
       zOffset : zOffset,
-      feedRate : 1100,
-      seekRate : 1400
+      feedRate : 1000,
+      seekRate : 1000
     }
     const converter = new Converter(settings);
 
@@ -112,15 +112,18 @@ document.addEventListener('DOMContentLoaded', function () {
       gcodeBtn.setAttribute('disabled', true)
       textarea.removeAttribute('disabled')
 
-      textarea.value = gcode;
+      // textarea.value = gcode;
       textarea.style.color = 'gray';
       const gcodeLines = gcode.split('\n');
       gcodeLines.forEach(gcode => {
         // remove unnecessary whitespace from each line 
-        const trimmedLine = gcode.trim(); 
-        if (trimmedLine !== "") {
-          gcodeArray.push(trimmedLine)
+        let trimmedLine = gcode.trim(); 
+        if(trimmedLine.includes('G0 Z4')) {
+          trimmedLine = 'M03 S000'
+        } else if (trimmedLine.includes('G0 Z0')) {
+          trimmedLine = 'M03 S123'
         }
+        textarea.value += trimmedLine + '\n'
       });
     })
 
@@ -165,16 +168,9 @@ document.addEventListener('DOMContentLoaded', function () {
 
     // Prompt user to select an Arduino Uno device.
     port = await navigator.serial.requestPort();
-
-
-    // port = await navigator.serial.requestPort();
     const { usbProductId, usbVendorId } = port.getInfo();
     console.log("portInfo :::", usbProductId, usbVendorId);
     await port.open({ baudRate: 115200 });
-    // const encoder = new TextEncoder();
-    // const wrt = port.writable.getWriter();
-    // wrt.write(encoder.encode("G0 X0 Y0"));
-    // wrt.releaseLock();
     console.log('Port opened successfully >>>>', port);
 
   })
@@ -195,11 +191,6 @@ document.addEventListener('DOMContentLoaded', function () {
         gcodeArray.push(trimmedLine)
       };
     })
-
-    // const encoder = new TextEncoder();
-    // const writer = port.writable.getWriter();
-    // await writer.write(encoder.encode("G0 X0Y0\n"));
-    // writer.releaseLock();
 
     for (const command of gcodeArray){
       console.log('Command : ', command)
