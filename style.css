@@ -201,3 +201,99 @@
   overflow: hidden; /* Hide overflow content */
 }
 
+
+
+/* Directional Button  */
+.button-group {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  grid-template-rows: repeat(3, 1fr);
+  grid-gap: 10px;
+  width: fit-content;
+  height: fit-content;
+}
+
+.direction-button,
+.center-button {
+  padding: 10px;
+  background-color: lightblue;
+  border: none;
+  cursor: pointer;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  box-shadow: rgba(0, 0, 0, 0.19) 0px 10px 20px, rgba(0, 0, 0, 0.23) 0px 6px 6px;
+}
+
+.up {
+  grid-column: 2;
+  grid-row: 1;
+}
+
+.down {
+  grid-column: 2;
+  grid-row: 3;
+}
+
+.left {
+  grid-column: 1;
+  grid-row: 2;
+}
+
+.right {
+  grid-column: 3;
+  grid-row: 2;
+}
+
+.center-button {
+  grid-column: 2;
+  grid-row: 2;
+  background-color: lightgreen;
+}
+
+.controlDiv {
+  display: flex;
+  height: 100%;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.controlDiv button {
+  background-color: #6f0000;
+  padding: 5px;
+  width: 100%;
+  border-radius: 10px;
+  color: white;
+  font-weight: 500;
+  transition: 0.5s ease;
+} 
+
+.controlDiv button:hover {
+  box-shadow: rgba(0, 0, 0, 0.4) 0px 2px 4px, rgba(0, 0, 0, 0.3) 0px 7px 13px -3px, rgba(0, 0, 0, 0.2) 0px -3px 0px inset;
+}
+
+.controlDiv h4 {
+  background: black;
+  padding: 2px 10px;
+  color: white;
+  font-weight: 500;
+  border-top-left-radius: 10px;
+  border-top-right-radius: 10px;
+  text-align: center;
+}
+
+.controlDiv textarea {
+  background: black;
+  outline: none;
+  padding: 5px 15px;
+  color: #ffffff;
+  border-bottom-left-radius: 10px;
+  border-bottom-right-radius: 10px;
+  letter-spacing: 2px;
+  width: 100%;
+  font-size: 10px;
+  min-width: 16rem;
+  min-height: 3rem;
+  scrollbar-width: none;
+  margin-top: 3px;
+}

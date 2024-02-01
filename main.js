@@ -1,7 +1,7 @@
 import './style.css';
 import { Converter } from 'svg-to-gcode';
 import { optimize } from 'svgo';
-import { requestSerialPort, closeSerialPort } from './serial';
+// import { requestSerialPort, closeSerialPort } from './serial';
 
 
 
@@ -160,19 +160,39 @@ document.addEventListener('DOMContentLoaded', function () {
   // ------------------- Connect to Plotter via Serial API -----------------------
   const serialBtn = document.getElementById('connect');
   serialBtn.addEventListener('click', async () => {
-    // Filter on devices with the Arduino Uno USB Vendor/Product IDs.
-    const filters = [
-      { usbVendorId: 0x2341, usbProductId: 0x0043 },
-      { usbVendorId: 0x2341, usbProductId: 0x0001 }
-    ];
+    try {
+      // Filter on devices with the Arduino Uno USB Vendor/Product IDs.
+      const filters = [
+        { usbVendorId: 0x2341, usbProductId: 0x0043 },
+        { usbVendorId: 0x2341, usbProductId: 0x0001 }
+      ];
 
-    // Prompt user to select an Arduino Uno device.
-    port = await navigator.serial.requestPort();
-    const { usbProductId, usbVendorId } = port.getInfo();
-    console.log("portInfo :::", usbProductId, usbVendorId);
-    await port.open({ baudRate: 115200 });
-    console.log('Port opened successfully >>>>', port);
+      // Prompt user to select an Arduino Uno device.
+      port = await navigator.serial.requestPort();
+      const { usbProductId, usbVendorId } = port.getInfo();
+      console.log("portInfo :::", usbProductId, usbVendorId);
+      await port.open({ baudRate: 115200 });
+      displayResponse('Port Open', 'OK')
 
+
+      const encoder = new TextEncoder();
+      const writer = port.writable.getWriter();
+      const reader = port.readable.getReader();
+      
+      await writer.write(encoder.encode(`G21\n`));
+      writer.releaseLock();
+
+      const response =   await reader.read();
+      reader.releaseLock();
+      const recievedText = new TextDecoder().decode(response.value);
+      displayResponse('G21', recievedText)
+
+      serialBtn.style.display = 'none';
+      document.getElementById('disconnect').style.display = 'block'
+
+    } catch (error) {
+      console.error("Error During Connection::", error)
+    }
   })
 
 
@@ -204,6 +224,7 @@ document.addEventListener('DOMContentLoaded', function () {
       const recievedText = new TextDecoder().decode(response.value);
 
       if (response) {
+        displayResponse(command, recievedText)
         console.log('Command : ' + command + ' >>>>>' + recievedText);
       } else {
         console.error('Unexpected Error : ', response);
@@ -222,7 +243,53 @@ document.addEventListener('DOMContentLoaded', function () {
       document.getElementById('disconnect').style.display = 'none';
     })
   })
+
+
+  // ---------------------- Jog Buttons -------------------------
+  const controlBtnGroup = document.getElementById('dirBtnGroup');
+  const buttons = controlBtnGroup.querySelectorAll('button');
+
+  buttons.forEach(button => {
+    button.addEventListener('click', async ()=>{
+      const command = button.dataset.command
+
+      try {
+        const encoder = new TextEncoder();
+        const writer = port.writable.getWriter();
+        const reader = port.readable.getReader();
+        
+        await writer.write(encoder.encode(`${command}\n`));
+        writer.releaseLock();
+        const response = await reader.read();
+        const recievedText = new TextDecoder().decode(response.value);
+
+        displayResponse(command, recievedText)
+
+        if (command === 'M03 S123'){
+          button.dataset.command = 'M03 S000';
+        } else if (command === 'M03 S000'){
+          button.dataset.command = 'M03 S123';
+        }
+
+      } catch (error) {
+        console.error('ERROR From Jog Buttons >>> \n ', error)
+      }
+    })
+  })
+
 })
 
+function displayResponse(command, response) {
+  const textArea = document.getElementById('responseArea');
+  textArea.value += `${command} -->> ${response}\n`;
+  textArea.scrollTop = textArea.scrollHeight - 1;
+}
 
+const closeSerialPort = async() => {
+  if (port) {
+    await reader.releaseLock();
+    await port.close();
+    console.log('Port closed successfully >>>>', port);
+  }
+};
 

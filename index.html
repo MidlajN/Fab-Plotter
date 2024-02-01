@@ -29,7 +29,7 @@
             </div>
          </div>
         </div>
-        <div class="w-1/4 px-5 h-full">
+        <div class="w-1/4 px-5 h-full flex flex-col justify-around">
           <div class="h-1/4 svgButtons">
             <div class="grid-container">
               <div class="flex items-center justify-center">
@@ -63,14 +63,42 @@
                 <button class="generateGcode" id="generateGcode"><i class="fa-solid fa-gears"></i> Generate G-Code</button>  
               </div>
               <div class="flex items-center justify-end">
-                <button class="plot" id="sendSerial">Plot <i class="fa-solid fa-print fa-sm"></i></button>
+                <button class="plot" id="sendSerial">Send <i class="fa-solid fa-print fa-sm"></i></button>
               </div>
             </div>            
           </div>
-          <div class="h-3/4 svgGcode">
+          <div class="h-2/4 svgGcode">
             <button id="downloadGcode"><i class="fa-solid fa-file-arrow-down fa-lg" style="color: #3A5A99;"></i></button>
             <!-- <button disabled id="clearCode">Clear G-Code &nbsp; <i class="fa-solid fa-trash"></i></button> -->
             <textarea name="gcode" id="gcode"  style="transition: 0.5s ease;color: rgba(14, 15, 15, 0.719);"></textarea>
+          </div>
+          <div class="1/4">
+            <div class="flex items-center justify-between h-full" id="dirBtnGroup">
+              <div class="button-group">
+                <button class="direction-button up" id="dirUp" data-command="G0 Y5">
+                  <i class="fa-solid fa-circle-chevron-up"></i>
+                </button>
+                <button class="direction-button left" id="dirLeft" data-command="G0 X-5">
+                  <i class="fa-solid fa-circle-chevron-left"></i>
+                </button>
+                <button class="center-button" data-command="M03 S123">
+                  <i class="fa-brands fa-centercode"></i>
+                </button>
+                <button class="direction-button right" id="dirRight" data-command="G0 X5">
+                  <i class="fa-solid fa-circle-chevron-right"></i>
+                </button>
+                <button class="direction-button down" id="dirDown" data-command="G0 Y-5">
+                  <i class="fa-solid fa-circle-chevron-down"></i>
+                </button>
+              </div>
+              <div class="controlDiv" >
+                <button data-command="G10 P0 L20 X0Y0Z0">Set Origin</button>
+                <div class="responseDiv mt-3" >
+                  <h4>Response</h4>
+                  <textarea name="responseArea" id="responseArea" disabled></textarea>
+                </div>
+              </div>
+            </div>
           </div>
         </div> 
       </div>
