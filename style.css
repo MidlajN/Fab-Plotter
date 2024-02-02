@@ -1,6 +1,9 @@
+
 .main {
   height: 100vh;
 }
+
+/* Navbar */
 .navbar h3 {
   font-size: 20px;
   font-weight: 500;
@@ -8,6 +11,8 @@
   text-transform: uppercase;
   letter-spacing: 0.25rem;
 }
+
+/* Svg Drag & Drop Section */
 .svgDiv {
   display: flex;
   align-items: center;
@@ -46,49 +51,8 @@
   transition: 0.3s ease;
 }
 
-.svgGcode {
-  position: relative;
-  border-radius: 1rem;
-  padding: 25px;
-  box-shadow: rgba(50, 50, 93, 0.25) 0px 2px 5px -1px, rgba(0, 0, 0, 0.3) 0px 1px 3px -1px;
-  overflow: hidden;
-}
 
-.svgGcode button {
-  position: absolute;
-  right: 45px;
-  top: 45px;
-  text-align: end;
-  font-size: 12px;
-  font-weight: 500;
-  padding: 3px 10px;
-  background: #cbcbcb78;
-  border-radius: .5rem;
-  color: white;
-  transition: 0.5s ease;
-}
-.clearCode:hover {
-  background-color: red;
-  color: white !important; 
-}
-
-.svgGcode textarea {
-  width: 100%;
-  height: 100%;
-  background-color: #e5e5f796;
-  border: 0;
-  color: gray;
-  box-shadow: inset 0px 0px 10px 1px #00000007;
-  border-radius: 5px;
-  padding: 10px;
-  transition: box-shadow 0.5s ease;
-  outline: none; /* Remove default focus outline */
-}
-
-.svgGcode textarea:focus {
-  box-shadow: inset 0px 0px 10px 8px #6969691c;
-}
-
+/* G-Code Generation & Plotting Section */
 .svgButtons {
   padding: 0px 20px 20px 20px;
 }
@@ -183,8 +147,6 @@
   transition: background-color 0.5s linear;
 }
 
-
-
 .fa-print {
   color: white;
   display: inline-block;
@@ -194,16 +156,54 @@
   padding: 8px;
   transition: background-color 0.5s linear;
 }
-.container {
+
+
+/* G-Code TextArea */
+.svgGcode {
   position: relative;
-  width: 300px; /* Adjust width as needed */
-  height: 200px; /* Adjust height as needed */
-  overflow: hidden; /* Hide overflow content */
+  border-radius: 1rem;
+  padding: 25px;
+  box-shadow: rgba(50, 50, 93, 0.25) 0px 2px 5px -1px, rgba(0, 0, 0, 0.3) 0px 1px 3px -1px;
+  overflow: hidden;
+}
+
+.svgGcode button {
+  position: absolute;
+  right: 45px;
+  top: 45px;
+  text-align: end;
+  font-size: 12px;
+  font-weight: 500;
+  padding: 3px 10px;
+  background: #cbcbcb78;
+  border-radius: .5rem;
+  color: white;
+  transition: 0.5s ease;
+}
+.clearCode:hover {
+  background-color: red;
+  color: white !important; 
+}
+
+.svgGcode textarea {
+  width: 100%;
+  height: 100%;
+  background-color: #e5e5f796;
+  border: 0;
+  color: gray;
+  box-shadow: inset 0px 0px 10px 1px #00000007;
+  border-radius: 5px;
+  padding: 10px;
+  transition: box-shadow 0.5s ease;
+  outline: none; /* Remove default focus outline */
+}
+
+.svgGcode textarea:focus {
+  box-shadow: inset 0px 0px 10px 8px #6969691c;
 }
 
 
-
-/* Directional Button  */
+/* Directional Buttons  */
 .button-group {
   display: grid;
   grid-template-columns: repeat(3, 1fr);

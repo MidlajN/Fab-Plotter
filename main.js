@@ -1,18 +1,47 @@
+/**
+ * This script handles SVG file manipulation, G-code generation, and serial communication with a plotter.
+ *
+ * Usage:
+ * - Drag and drop an SVG file onto the designated drop area to display it.
+ * - Alternatively, use the file input element to select and display an SVG file.
+ * - Use the mouse wheel to zoom in and out of the displayed SVG content.
+ * - Generate G-code from the displayed SVG by clicking the 'Generate G-code' button.
+ * - You can Download the generated G-code by clicking the 'Download G-code' button.
+ * - Connect to a plotter via serial connection by clicking the 'Connect' button.
+ * - Send the generated G-code to the plotter through the serial connection by clicking the 'Send G-code' button.
+ * - Close the serial connection to the plotter by clicking the 'Disconnect' button.
+ * - Control the plotter's movement using the jog buttons.
+ *
+ * Dependencies:
+ * - './style.css': External CSS file for styling the webpage.
+ * - 'svg-to-gcode': Library for converting SVG files to G-code.
+ * - 'svgo': Library for optimizing SVG files.
+ *
+ * Functions:
+ * - displaySvg(file): Displays the content of the SVG file in the zoomable container.
+ * - displayResponse(command, response): Displays the response received from the plotter in the response area.
+ * - closeSerialPort(): Closes the serial connection to the plotter.
+ *
+ * Global Variables:
+ * - zoomLevel: Current zoom level of the zoomable container.
+ * - maxZoomLevel: Maximum zoom level allowed for the zoomable container.
+ * - svgContent: Content of the loaded SVG file.
+ * - gcodeArray: Array to store generated G-code from SVG files.
+ * - port: Serial port connection to the plotter.
+ *
+ * Note: This script utilizes event listeners for drag and drop, file input change, mouse wheel, and button clicks to handle user interactions.
+ */
+
 import './style.css';
 import { Converter } from 'svg-to-gcode';
 import { optimize } from 'svgo';
-// import { requestSerialPort, closeSerialPort } from './serial';
-
-
 
 document.addEventListener('DOMContentLoaded', function () {
   let zoomLevel = 1;
   const maxZoomLevel = 4;
   let svgContent;
   let gcodeArray = [];
-
   let port;
-  let reader;
 
   // ------------------- Drag and Drop & Input Functions ----------------------
   const dropArea = document.getElementById('dropArea');
