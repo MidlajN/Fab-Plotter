@@ -59,7 +59,7 @@ To install and run the SVG to G-code Plotter Interface:
 1. Clone the repository:
 
    ```
-   git clone https://github.com/MidddlajN/Fab-Plotter.git
+   git clone https://github.com/MidlajN/Fab-Plotter.git
    ```
 
 2. Navigate to the project directory:
